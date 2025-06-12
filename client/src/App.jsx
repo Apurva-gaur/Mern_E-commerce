@@ -9,6 +9,7 @@ import SearchProduct from './Component/Product/SearchProduct';
 import Login from './Component/User/Login';
 import Register from './Component/User/Register';
 import { ToastContainer } from 'react-toastify';
+import Profile from './Component/User/Profile';
 
 
 
@@ -30,11 +31,9 @@ function App() {
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/product/search/:term" element={<SearchProduct />} />
         <Route path="/login" element={<Login />} />
-     
         <Route path="/register" element={<Register />} />
-        
-        {/* <Route path="/profile" element={<Profile />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/profile" element={<Profile />} />
+        {/* <Route path="/cart" element={<Cart />} />
         <Route path="/shipping" element={<Address />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/oderconfirmation" element={<OrderConfirmation />} /> */}
