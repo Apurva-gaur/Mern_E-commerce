@@ -7,8 +7,10 @@ import { ToastContainer, toast,Bounce } from 'react-toastify';
 
 function AppState(props) {
     const [products, setProducts] = useState([]);
-    const [token, setToken] = useState();
+    const [token, setToken] = useState("");
     const [isAuthenticated, setisAuthenticated] = useState(false);
+    const [profileData, setProfileData] = useState();
+
 
     const url="http://localhost:3000"
     // get all the product
@@ -22,11 +24,13 @@ function AppState(props) {
         })
         // console.log(product.data.products)
         setProducts(product.data.products)
+        userProfile();
+       
 
       }
       fetchProduct(); 
      
-    }, [])
+    }, [token])
     // register user
     const register=async(username,email,password)=>{
      const apiResponse= await  axios.post(`${url}/api/user/register`,{username,email,password},{
@@ -73,20 +77,40 @@ function AppState(props) {
         transition: Bounce,
         });
 
-        console.log(apiResponse)
-        setToken(apiResponse.data.token)
-        localStorage.setItem("token",token)
+        // console.log("this is api response after login",apiResponse)
+        // console.log("this is reponse token",apiResponse.data.token)
+        const receivedToken =  apiResponse.data.token
+        setToken( receivedToken)
+        localStorage.setItem("token",receivedToken)
         setisAuthenticated(true)// to show the dynamic navbar
+        
         
         return apiResponse.data
 
     }
-    // log out the user
+    // log out the user 
+    // setToken empty authentication false
     const logoutUser=()=>{
       setToken("")
       setisAuthenticated(false)
       localStorage.removeItem("token")
     }
+
+    // get user profile data
+    const userProfile = async()=>{
+        const profile= await  axios.get(`${url}/api/user/profile`,{
+           headers: {
+          "Content-Type": "Application/json",
+           "Auth":token
+        },
+        withCredentials: true,
+        })
+       console.log(token)
+       console.log("user profile data",profileData)
+       setProfileData(profile)
+
+      }
+    
     
   return (
     <>
