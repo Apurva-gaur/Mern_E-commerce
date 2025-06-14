@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const ShowProduct = () => {
   const { products, addToCart } = useContext(AppContext);
-  console.log(products)
+  // console.log(products)
 
   return (
     <div className="px-10 py-10 bg-gray-100 min-h-screen border border-red-300">
