@@ -26,6 +26,7 @@ function AppState(props) {
         // console.log(product.data.products)
         setProducts(product.data.products)
         userProfile();
+        getToCart();
        
 
       }
@@ -121,12 +122,28 @@ function AppState(props) {
         withCredentials: true,
         })
         //  console.log(product.data.cart.items)
-         setCart(product.data.cart.items)
-      
-       
+        //  setCart(...userCart,product.data.cart.items)
 
       }
-      console.log(userCart)
+
+      // console.log(userCart)
+      // get user cart item which are already exited
+        const getToCart = async()=>{
+        const productList= await  axios.get(`${url}/api/cart/user`,{
+           headers: {
+          "Content-Type": "Application/json",
+          "Auth":token
+         
+        },
+        withCredentials: true,
+        })
+        //  console.log(product.data.cart.items)
+        console.log(productList)
+        setCart(productList.data.cart.items)
+
+      }
+      // console.log(" this is fecheted cart item",userCart)
+
  
 
     
