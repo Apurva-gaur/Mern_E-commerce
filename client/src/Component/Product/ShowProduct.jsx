@@ -39,6 +39,7 @@ const ShowProduct = () => {
                   addToCart(
                     product._id,
                     product.title,
+                    product.description,
                     product.price,
                     1,
                     product.imgSrc
