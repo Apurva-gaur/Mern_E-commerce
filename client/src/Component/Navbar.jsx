@@ -8,7 +8,7 @@ const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigte=useNavigate();
 
-  const { setFilteredData, products, logoutUser , isAuthenticated, cart } =useContext(AppContext);
+  const { setFilteredData, products, logoutUser , isAuthenticated, userCart } =useContext(AppContext);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -53,20 +53,20 @@ const Navbar = () => {
           {isAuthenticated ? (
             <>
               {/* Cart Button */}
+              <Link to="/cart">
             
               <button
-                onClick={() => alert("Cart clicked!")}
                 className="relative text-green-600 hover:text-green-700 transition"
-                aria-label="Cart"
-              >
+                aria-label="Cart" >
+              
                 
                 <FiShoppingCart className="text-2xl" />
-                {cart?.items?.length > 0 && (
+                {userCart?.length > 0 && (
                   <span className="absolute -top-1 -right-2 bg-red-600 text-white text-xs rounded-full px-1.5">
-                    {cart.items.length}
+                    {userCart.length}
                   </span>
                 )}
-              </button>
+              </button></Link>
 
               {/* Profile Button */}
               <Link to="/profile">
