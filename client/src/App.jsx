@@ -10,6 +10,7 @@ import Login from './Component/User/Login';
 import Register from './Component/User/Register';
 import { ToastContainer } from 'react-toastify';
 import Profile from './Component/User/Profile';
+import Cart from './Component/Cart.jsx'
 
 
 
@@ -33,8 +34,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
-        {/* <Route path="/cart" element={<Cart />} />
-        <Route path="/shipping" element={<Address />} />
+        <Route path="/cart" element={<Cart />} />
+        {/* <Route path="/shipping" element={<Address />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/oderconfirmation" element={<OrderConfirmation />} /> */}
       </Routes>
