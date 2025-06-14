@@ -11,6 +11,7 @@ function AppState(props) {
     const [isAuthenticated, setisAuthenticated] = useState(false);
     const [profileData, setProfileData] = useState();
     const [userCart,setCart]=useState([])
+    const [reload, setReload] = useState(false);
 
 
     const url="http://localhost:3000"
@@ -32,7 +33,7 @@ function AppState(props) {
       }
       fetchProduct(); 
      
-    }, [token])
+    }, [token,reload])
     // register user
     const register=async(username,email,password)=>{
      const apiResponse= await  axios.post(`${url}/api/user/register`,{username,email,password},{
@@ -113,8 +114,8 @@ function AppState(props) {
 
       }
       // add to cart
-      const addToCart = async(productId,title,description,price,qyt,imgSrc)=>{
-        const product= await  axios.post(`${url}/api/cart/add`,{productId,title,description,price,qyt,imgSrc},{
+      const addToCart = async(productId,title,description,price,qty,imgSrc)=>{
+        const product= await  axios.post(`${url}/api/cart/add`,{productId,title,description,price,qty,imgSrc},{
            headers: {
           "Content-Type": "Application/json",
           "Auth":token
@@ -123,6 +124,18 @@ function AppState(props) {
         })
         //  console.log(product.data.cart.items)
         //  setCart(...userCart,product.data.cart.items)
+        toast.success(product.data.message, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+        });
+        setReload(!reload);
 
       }
 
@@ -138,11 +151,78 @@ function AppState(props) {
         withCredentials: true,
         })
         //  console.log(product.data.cart.items)
-        console.log(productList)
+        // console.log(productList.data.cart.items)
         setCart(productList.data.cart.items)
 
       }
-      // console.log(" this is fecheted cart item",userCart)
+      console.log(" this is fecheted cart item",userCart)
+
+      //decrease the quantity of cart product
+      const decreaseQuantity = async( productId, qty)=>{
+        const productList= await  axios.post(`${url}/api/cart/--qty`,{ productId, qty},{
+           headers: {
+          "Content-Type": "Application/json",
+          "Auth":token
+         
+        },
+        withCredentials: true,
+        })
+        //  console.log(product.data.cart.items)
+        // console.log(productList.data.cart.items)
+        setReload(!reload);
+
+      }
+
+      //  remove Item from cart
+  const removeFromCart = async (productId) => {
+    const api = await axios.delete(`${url}/api/cart/remove/${productId}`, {
+      headers: {
+        "Content-Type": "Application/json",
+        Auth: token,
+      },
+      withCredentials: true,
+    });
+    setReload(!reload);
+    // console.log("remove item from cart ",api);
+    toast.success(api.data.message, {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
+  };
+
+  // clear the cart function
+
+   const clearCart = async () => {
+    const api = await axios.delete(`${url}/api/cart/clear`, {
+      headers: {
+        "Content-Type": "Application/json",
+        Auth: token,
+      },
+      withCredentials: true,
+    });
+    setReload(!reload);
+    // console.log("remove item from cart ",api);
+    toast.success(api.data.message, {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
+    //  setCart(api.data.cart);
+    //  setUser("user cart ",api);
+  };
 
  
 
@@ -150,7 +230,7 @@ function AppState(props) {
     
   return (
     <>
-    <AppContext.Provider value={{products,register,loginUser,isAuthenticated,url,token,setisAuthenticated,logoutUser,addToCart,userCart}}>
+    <AppContext.Provider value={{products,register,loginUser,isAuthenticated,url,token,setisAuthenticated,logoutUser,addToCart,userCart,decreaseQuantity,removeFromCart,clearCart}}>
         {props.children}
     </AppContext.Provider>
     </>
