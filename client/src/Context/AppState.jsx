@@ -110,6 +110,7 @@ function AppState(props) {
        setProfileData(profile)
 
       }
+      // add to cart
     
     
   return (
