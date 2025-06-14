@@ -10,6 +10,7 @@ function AppState(props) {
     const [token, setToken] = useState("");
     const [isAuthenticated, setisAuthenticated] = useState(false);
     const [profileData, setProfileData] = useState();
+    const [userCart,setCart]=useState([])
 
 
     const url="http://localhost:3000"
@@ -105,17 +106,34 @@ function AppState(props) {
         },
         withCredentials: true,
         })
-       console.log(token)
-       console.log("user profile data",profileData)
+      //  console.log(token)
+      //  console.log("user profile data",profileData)
        setProfileData(profile)
 
       }
       // add to cart
+      const addToCart = async(productId,title,description,price,qyt,imgSrc)=>{
+        const product= await  axios.post(`${url}/api/cart/add`,{productId,title,description,price,qyt,imgSrc},{
+           headers: {
+          "Content-Type": "Application/json",
+          "Auth":token
+        },
+        withCredentials: true,
+        })
+        //  console.log(product.data.cart.items)
+         setCart(product.data.cart.items)
+      
+       
+
+      }
+      console.log(userCart)
+ 
+
     
     
   return (
     <>
-    <AppContext.Provider value={{products,register,loginUser,isAuthenticated,url,token,setisAuthenticated,logoutUser}}>
+    <AppContext.Provider value={{products,register,loginUser,isAuthenticated,url,token,setisAuthenticated,logoutUser,addToCart,userCart}}>
         {props.children}
     </AppContext.Provider>
     </>
